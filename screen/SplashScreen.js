@@ -1,10 +1,15 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, Text, View, Image, SafeAreaView} from 'react-native';
 import logoImage from '../assets/logo.png';
+import PushNotificationIOS from "@react-native-community/push-notification-ios";
 
 function SplashScreen({navigation}) {
 
     useEffect(() => {
+        // PushNotificationIOS.addNotificationRequest({
+        //     id: "1",
+        //     title: "일어나.. 환수해야지"
+        // });
         setTimeout(() => {
             navigation.navigate('Main')
         }, 1000)

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 
-function BeforeDay({overDay}) {
+function BeforeDay() {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>

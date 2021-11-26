@@ -10,7 +10,10 @@ function BeforeDay({overDay}) {
             <Text style={styles.subtitle}>
                 환수를 완료 하였다면 아래 버튼을 눌러주세요!
             </Text>
-            <Button title={"환수완료"}/>
+            <View style={styles.button}>
+                <Button title={"환수 완료"}/>
+                <Button title={"환수 미루기"}/>
+            </View>
         </View>
     );
 }
@@ -22,6 +25,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         padding: 10
+    },
+    button: {
+        flexDirection: "row"
     },
     title: {
         fontWeight: 'bold',

@@ -1,53 +1,55 @@
-import React from 'react';
-import {Button, Dimensions, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import SafeAreaView from "react-native/Libraries/Components/SafeAreaView/SafeAreaView";
 import ActionButton from "react-native-action-button";
 import BeforeDay from "./component/BeforeDay";
 import ToDay from "./component/ToDay";
 import AfterDay from "./component/AfterDay";
-import {addDays, differenceInDays, format} from "date-fns";
+import {addDays, differenceInCalendarDays, differenceInDays, format} from "date-fns";
 import {range} from "lodash";
-import {now} from "lodash/date";
 import DefaultDay from "./component/DefaultDay";
+import {month} from "react-native-calendars/src/dateutils";
+import PagerView from "react-native-pager-view";
 
 const screenWidth = Dimensions.get('window').width;
 
-const latestDate = Date.parse('2021-11-23')
+const startDate = Date.parse('2021-11-23')
 const cycle = 3
+const now = new Date()
 
-function generateMarkedData() {
+function generateMarkedData(year, month) {
     const result = new Map();
+    const lastDay = new Date(year, month, 0).getDate()
 
-    range(100)
-        .map(value => addDays(latestDate, value * cycle))
-        .forEach(value =>
-            result[format(value, 'yyyy-MM-dd')] = {
-                selected: true, selectedColor: '#87ceeb'
+    range(lastDay)
+        .map(value => new Date(year, month, value + 1))
+        .filter(value => (Math.abs(differenceInCalendarDays(startDate, value)) % cycle) === 0)
+        .filter(value => differenceInCalendarDays(startDate, value) <= 0)
+        .forEach(value => {
+                result[format(value, 'yyyy-MM-dd')] = {
+                    selected: true, selectedColor: '#87ceeb'
+                }
             }
         )
 
     return result
 }
 
-const nowDay = new Date()
-const nextDay = addDays(new Date(), -2)
-
 function ChangeDDay() {
-    // const difference = differenceInDays(nextDay, nowDay)
-    const difference = nowDay.getDay() / 2
-    let dday = <DefaultDay/>
-    if (difference < 0) {
-        dday = <BeforeDay leftDay={difference}/>
-    } else if (difference === 0) {
-        dday = <ToDay/>
-    } else if (difference > 0) {
-        dday = <AfterDay overDay={difference}/>
-    }
-    return (<DefaultDay/>)
+    const difference = differenceInCalendarDays(now, now)
+    return (<PagerView style={styles.dayContainer}>
+        <DefaultDay/>
+        <BeforeDay leftDay={difference}/>
+        <ToDay/>
+        <AfterDay overDay={difference}/>
+    </PagerView>)
 }
 
 function MainScreen({navigation}) {
+
+    const [markedDate, setMarkedDate] = useState(generateMarkedData(now.getFullYear(), now.getMonth()))
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.container}>
@@ -58,8 +60,13 @@ function MainScreen({navigation}) {
                     onDayPress={(day) => {
                         console.log('selected day', day)
                     }}
-                    markedDates={generateMarkedData()}
-
+                    onMonthChange={(date) => {
+                        setMarkedDate(generateMarkedData(date.year, date.month - 1))
+                    }}
+                    markedDates={markedDate}
+                    theme={{
+                        todayTextColor: '#000000',
+                    }}
                 />
                 <ActionButton
                     onPress={() => {
@@ -77,8 +84,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     dayContainer: {
-        alignItems: "center",
-        justifyContent: "center",
+        width: "100%",
+        height: 80,
         padding: 10
     },
     title: {
