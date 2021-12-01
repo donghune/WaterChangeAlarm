@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-function BeforeDay({title, subTitle, buttons}) {
+function TopBanner({title, subTitle, buttons}) {
 
     let titleComp = <View/>
 
@@ -47,4 +47,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default BeforeDay
+export default TopBanner
