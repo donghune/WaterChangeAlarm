@@ -1,20 +1,36 @@
 import React from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 
-function BeforeDay({leftDay}) {
+function BeforeDay({title, subTitle, buttons}) {
+
+    let titleComp = <View/>
+
+    if (title !== "") {
+        titleComp = <Text style={styles.title}>
+            {title}
+        </Text>
+    }
+
+    let subTitleComp = <View/>
+
+    if (subTitle !== "") {
+        subTitleComp = <Text style={styles.subtitle}>
+            {subTitle}
+        </Text>
+    }
+
     return (
         <View style={styles.container}>
-            <View style={styles.dayContainer}>
-                <Text style={styles.title}>
-                    다음 환수까지 {leftDay * -1}일 남았습니다!
-                </Text>
-            </View>
+            {titleComp}
+            {subTitleComp}
+            {buttons}
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
+        width: "100%",
         height: 100,
         backgroundColor: '#fff',
         alignItems: "center",
@@ -26,8 +42,8 @@ const styles = StyleSheet.create({
         fontSize: 15
     },
     subtitle: {
-        fontWeight: 'bold',
-        fontSize: 10
+        fontSize: 13,
+        marginTop: 10
     },
 });
 

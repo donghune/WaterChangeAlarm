@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, Text, View, Image, SafeAreaView} from 'react-native';
+import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import logoImage from '../assets/logo.png';
-import PushNotificationIOS from "@react-native-community/push-notification-ios";
 
 function SplashScreen({navigation}) {
 

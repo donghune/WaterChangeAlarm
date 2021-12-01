@@ -34,7 +34,7 @@ const FishbowlAddScreen = () => {
 
 const styles = StyleSheet.create({
     pagerView: {
-        flex: 1,
+        width:"100%",
         margin: 12,
         alignContent: 'center',
         justifyContent: 'center',
